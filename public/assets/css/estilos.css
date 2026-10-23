@@ -1,0 +1,18 @@
+/* Estilos locales para la vista de tarjetas */
+.popover {
+    max-width: none !important;
+}
+
+.card-payment {
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+}
+
+.card-payment .card-body {
+    padding: 1.5rem;
+}
+
+.card-payment .card-footer {
+    background-color: transparent;
+    border-top: 1px solid #f1f3f5;
+}

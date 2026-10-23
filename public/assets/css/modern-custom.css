@@ -1,0 +1,584 @@
+/* ==========================================================================
+   Curso+ Modern Design System
+   ========================================================================== */
+
+:root {
+    --brand-primary: #2563eb;
+    --brand-primary-hover: #1d4ed8;
+    --brand-primary-light: #eff6ff;
+    --brand-secondary: #4f46e5;
+    --brand-gradient: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+    --brand-gradient-hover: linear-gradient(135deg, #1d4ed8 0%, #4338ca 100%);
+    --surface-bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-subtle: #e2e8f0;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+    --shadow-card-hover: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    background-color: var(--surface-bg) !important;
+    color: var(--text-main) !important;
+    min-height: 100vh;
+}
+
+/* ----------------- Modern Navbar & Header ----------------- */
+.custom-app-header {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-subtle);
+    height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03);
+}
+
+.custom-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.35rem;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+
+.custom-brand .icon-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--brand-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.custom-brand span {
+    color: var(--brand-primary);
+}
+
+/* ----------------- Modern Sidebar ----------------- */
+.custom-sidebar {
+    width: 270px;
+    background: #0f172a;
+    color: #94a3b8;
+    min-height: calc(100vh - 70px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid #1e293b;
+    flex-shrink: 0;
+}
+
+.sidebar-nav-header {
+    font-size: 0.725rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: #64748b;
+    padding: 1.25rem 1.5rem 0.5rem;
+}
+
+.sidebar-nav-list {
+    list-style: none;
+    padding: 0 0.85rem;
+    margin: 0;
+}
+
+.sidebar-nav-item {
+    margin-bottom: 0.35rem;
+}
+
+.sidebar-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem 1rem;
+    color: #94a3b8;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.925rem;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+}
+
+.sidebar-nav-link i {
+    font-size: 1.25rem;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-nav-link:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-nav-link:hover i {
+    transform: translateX(2px);
+    color: #60a5fa;
+}
+
+.sidebar-nav-link.active {
+    color: #ffffff;
+    background: var(--brand-gradient);
+    box-shadow: 0 6px 16px -2px rgba(37, 99, 235, 0.45);
+}
+
+.sidebar-nav-link.active i {
+    color: #ffffff;
+}
+
+/* Sidebar User Footer */
+.sidebar-user-footer {
+    padding: 1.25rem;
+    background: #090e1a;
+    border-top: 1px solid #1e293b;
+}
+
+.user-mini-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.user-avatar-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--brand-gradient);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+    flex-shrink: 0;
+}
+
+.btn-sidebar-logout {
+    background: rgba(239, 68, 68, 0.12);
+    color: #f87171;
+    border: none;
+    padding: 0.45rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.825rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s ease;
+}
+
+.btn-sidebar-logout:hover {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+/* ----------------- Modern Page Header / Breadcrumbs ----------------- */
+.page-hero-banner {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 2rem;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border-subtle);
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.page-hero-title {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.page-hero-subtitle {
+    color: var(--text-muted);
+    font-size: 0.925rem;
+    margin-bottom: 0;
+}
+
+/* ----------------- Modern Cards ----------------- */
+.modern-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.modern-card:hover {
+    box-shadow: var(--shadow-card-hover);
+}
+
+.modern-card-header {
+    padding: 1.5rem 1.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modern-card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0;
+}
+
+.modern-card-body {
+    padding: 1.75rem;
+}
+
+/* ----------------- Course Explorer Grid ----------------- */
+.courses-modern-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.75rem;
+}
+
+.course-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.course-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: #cbd5e1;
+}
+
+.course-card-img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 190px;
+    background: linear-gradient(135deg, #1e293b, #334155);
+    overflow: hidden;
+}
+
+.course-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.course-card:hover .course-card-img {
+    transform: scale(1.05);
+}
+
+.course-card-badge-cost {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    color: #38bdf8;
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.course-card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.course-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    line-height: 1.35;
+}
+
+.course-card-desc {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.course-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #475569;
+    font-size: 0.825rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+}
+
+.course-meta-item i {
+    color: var(--brand-primary);
+    font-size: 1rem;
+}
+
+.course-card-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+/* ----------------- Modern Inputs & Forms ----------------- */
+.form-label-modern {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 0.45rem;
+    display: block;
+}
+
+.form-control-modern,
+.form-select-modern {
+    height: 48px;
+    border-radius: var(--radius-md) !important;
+    border: 1.5px solid var(--border-subtle) !important;
+    background-color: #ffffff !important;
+    padding: 0.65rem 1rem !important;
+    font-size: 0.925rem !important;
+    font-weight: 500 !important;
+    color: var(--text-main) !important;
+    transition: all 0.2s ease !important;
+}
+
+.form-control-modern:focus,
+.form-select-modern:focus {
+    border-color: var(--brand-primary) !important;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12) !important;
+    outline: none !important;
+}
+
+textarea.form-control-modern {
+    height: auto !important;
+    min-height: 95px !important;
+}
+
+/* ----------------- Modern Buttons ----------------- */
+.btn-modern-primary {
+    background: var(--brand-gradient);
+    color: #ffffff !important;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0.65rem 1.4rem;
+    font-weight: 600;
+    font-size: 0.925rem;
+    box-shadow: 0 4px 14px -1px rgba(37, 99, 235, 0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-modern-primary:hover {
+    background: var(--brand-gradient-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px -2px rgba(37, 99, 235, 0.45);
+}
+
+.btn-modern-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff !important;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0.65rem 1.4rem;
+    font-weight: 600;
+    font-size: 0.925rem;
+    box-shadow: 0 4px 14px -1px rgba(16, 185, 129, 0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-modern-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px -2px rgba(16, 185, 129, 0.45);
+}
+
+.btn-modern-outline {
+    background: #ffffff;
+    color: #334155 !important;
+    border: 1.5px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 0.6rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.925rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-modern-outline:hover {
+    border-color: var(--brand-primary);
+    color: var(--brand-primary) !important;
+    background-color: var(--brand-primary-light);
+}
+
+/* ----------------- Modern Tables ----------------- */
+.modern-table-wrapper {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.table-modern {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: collapse;
+}
+
+.table-modern thead th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-size: 0.775rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.table-modern tbody tr {
+    transition: background-color 0.15s ease;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.table-modern tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table-modern tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.table-modern tbody td {
+    padding: 1.15rem 1.25rem;
+    vertical-align: middle;
+    color: #1e293b;
+    font-size: 0.9rem;
+}
+
+/* ----------------- Badges & Tags ----------------- */
+.badge-modern-primary {
+    background: #eff6ff;
+    color: #2563eb;
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    border: 1px solid #dbeafe;
+}
+
+.badge-modern-success {
+    background: #ecfdf5;
+    color: #059669;
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    border: 1px solid #a7f3d0;
+}
+
+.badge-modern-warning {
+    background: #fffbeb;
+    color: #d97706;
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    border: 1px solid #fde68a;
+}
+
+/* ----------------- Modal Overlays ----------------- */
+.custom-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1050;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.custom-modal-box {
+    background: #ffffff;
+    border-radius: var(--radius-xl);
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    animation: modalSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ----------------- Responsive Adjustments ----------------- */
+@media (max-width: 991px) {
+    .custom-sidebar {
+        position: fixed;
+        left: -280px;
+        top: 70px;
+        bottom: 0;
+        z-index: 1000;
+        box-shadow: 10px 0 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-sidebar.show {
+        left: 0;
+    }
+
+    .app-main {
+        width: 100% !important;
+    }
+}
