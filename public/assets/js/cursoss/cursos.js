@@ -3,6 +3,16 @@ const csrfToken = $('meta[name="csrf-token"]').attr("content");
 
 let cursosCache = [];
 
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 $(document).ready(function () {
     cargarTodos();
     verificarEstadoSuscripcion();
@@ -41,7 +51,7 @@ function renderCursos(filter = "") {
     let html = "";
     filtrados.forEach((r) => {
         const imgSrc = r.imagen 
-            ? `${BASE_URL}/storage/${r.imagen}` 
+            ? `${BASE_URL}/storage/${encodeURI(r.imagen)}` 
             : `${BASE_URL}/assets/media/misc/curso.jpg`;
 
         const costoFormat = parseFloat(r.costo || 0).toLocaleString('es-MX', {
@@ -49,37 +59,44 @@ function renderCursos(filter = "") {
             maximumFractionDigits: 2
         });
 
+        const nombreSafe = escapeHtml(r.nombre);
+        const descSafe = escapeHtml(r.descripcion || 'Sin descripción disponible.');
+        const maestroSafe = escapeHtml(r.maestro || 'Instructor asignado');
+        const horasSafe = escapeHtml(r.horas || 1);
+        const cantAlumnosSafe = escapeHtml(r.cant_alumnos || 'Limitado');
+        const hashSafe = encodeURIComponent(r.hash || '');
+
         html += `
             <div class="course-card">
                 <div class="course-card-img-wrapper">
-                    <img src="${imgSrc}" class="course-card-img" alt="${r.nombre}" onerror="this.src='${BASE_URL}/assets/media/misc/curso.jpg'">
+                    <img src="${imgSrc}" class="course-card-img" alt="${nombreSafe}" onerror="this.src='${BASE_URL}/assets/media/misc/curso.jpg'">
                     <span class="course-card-badge-cost">
                         $${costoFormat} MXN
                     </span>
                 </div>
 
                 <div class="course-card-body">
-                    <h3 class="course-card-title">${r.nombre}</h3>
-                    <p class="course-card-desc">${r.descripcion || 'Sin descripción disponible.'}</p>
+                    <h3 class="course-card-title">${nombreSafe}</h3>
+                    <p class="course-card-desc">${descSafe}</p>
 
                     <div class="mb-3">
                         <div class="course-meta-item">
                             <i class="bi bi-person-workspace"></i>
-                            <span>${r.maestro ? r.maestro : 'Instructor asignado'}</span>
+                            <span>${maestroSafe}</span>
                         </div>
                         <div class="course-meta-item">
                             <i class="bi bi-clock-history text-warning"></i>
-                            <span>${r.horas || 1} horas lectivas</span>
+                            <span>${horasSafe} horas lectivas</span>
                         </div>
                         <div class="course-meta-item">
                             <i class="bi bi-people text-info"></i>
-                            <span>Cupo: ${r.cant_alumnos || 'Limitado'} alumnos</span>
+                            <span>Cupo: ${cantAlumnosSafe} alumnos</span>
                         </div>
                     </div>
 
                     <div class="course-card-footer">
                         <a class="btn-modern-primary w-100 text-center text-decoration-none" 
-                           href="${BASE_URL}/detallescurso/${r.hash}">
+                           href="${BASE_URL}/detallescurso/${hashSafe}">
                             <span>Ver Curso & Inscribirse</span>
                             <i class="bi bi-arrow-right"></i>
                         </a>

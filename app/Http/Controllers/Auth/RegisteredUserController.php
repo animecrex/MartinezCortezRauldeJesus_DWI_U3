@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -31,18 +29,32 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'usuario' => ['required', 'string', 'max:20'],
+            'name' => ['required', 'string', 'min:2', 'max:255', 'regex:/^[\pL\s\-]+$/u'],
+            'usuario' => ['required', 'string', 'min:3', 'max:20', 'unique:users,usuario', 'regex:/^[a-zA-Z0-9_.-]+$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', 'min:6'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'name.regex' => 'El nombre completo contiene caracteres no permitidos.',
+            'usuario.unique' => 'Este nombre de usuario ya está en uso. Por favor elige otro.',
+            'usuario.regex' => 'El usuario solo puede incluir letras, números, guiones y puntos.',
+            'usuario.min' => 'El usuario debe tener al menos 3 caracteres.',
+            'email.unique' => 'Este correo electrónico ya se encuentra registrado.',
+            'password.confirmed' => 'La confirmación de la contraseña no coincide.',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'usuario' => $request->usuario,
-            'email' => $request->email,
+            'name' => trim(strip_tags($request->name)),
+            'usuario' => trim($request->usuario),
+            'email' => strtolower(trim($request->email)),
             'password' => Hash::make($request->password),
         ]);
+
+        event(new Registered($user));
+
+        Log::channel('auth')->info(
+            '[REGISTRO_USUARIO_NUEVO][IP: ' . $request->ip() . '][ID:' . $user->id . '][Usuario:' . $user->usuario . ']'
+        );
+
         return response()->json([
             'message' => 'Usuario registrado correctamente'
         ]);

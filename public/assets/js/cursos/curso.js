@@ -1,5 +1,15 @@
 const BASE_URL = ($('meta[name="base-url"]').attr("content") || "").replace(/\/$/, "");
 
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 $("#guardar_curso").on("click", function (event) {
     event.preventDefault();
 
@@ -128,26 +138,33 @@ function cargarTodos() {
 
             (res || []).forEach((r) => {
                 const imgSrc = r.imagen 
-                    ? `${BASE_URL}/storage/${r.imagen}` 
+                    ? `${BASE_URL}/storage/${encodeURI(r.imagen)}` 
                     : `${BASE_URL}/assets/media/misc/curso.jpg`;
+
+                const nombreSafe = escapeHtml(r.nombre);
+                const maestroSafe = escapeHtml(r.maestro || 'No asignado');
+                const descSafe = escapeHtml(r.descripcion || '-');
+                const horasSafe = escapeHtml(r.horas || 1);
+                const hashSafe = encodeURIComponent(r.hash || '');
+                const idSafe = encodeURIComponent(r.id || '');
 
                 dataSet.push([
                     `<div class="d-flex align-items-center gap-3">
-                        <img src="${imgSrc}" class="rounded-3 object-fit-cover" style="width: 48px; height: 48px;" onerror="this.src='${BASE_URL}/assets/media/misc/curso.jpg'">
+                        <img src="${imgSrc}" class="rounded-3 object-fit-cover" style="width: 48px; height: 48px;" alt="${nombreSafe}" onerror="this.src='${BASE_URL}/assets/media/misc/curso.jpg'">
                         <div>
-                            <strong class="text-dark d-block fs-6">${r.nombre}</strong>
-                            <small class="text-muted"><i class="bi bi-clock me-1"></i>${r.horas || 1} hrs</small>
+                            <strong class="text-dark d-block fs-6">${nombreSafe}</strong>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i>${horasSafe} hrs</small>
                         </div>
                     </div>`,
-                    `<span class="badge-modern-primary"><i class="bi bi-person-fill me-1"></i>${r.maestro || 'No asignado'}</span>`,
-                    `<div class="text-truncate text-muted" style="max-width: 200px;">${r.descripcion || '-'}</div>`,
+                    `<span class="badge-modern-primary"><i class="bi bi-person-fill me-1"></i>${maestroSafe}</span>`,
+                    `<div class="text-truncate text-muted" style="max-width: 200px;">${descSafe}</div>`,
                     `<span class="badge-modern-success fw-bold">$${parseFloat(r.costo || 0).toFixed(2)}</span>`,
                     `
                     <div class="d-flex align-items-center gap-2">
-                        <a href="${BASE_URL}/detallescurso/${r.hash}" class="btn btn-sm btn-light-primary px-3 py-1 fw-bold">
+                        <a href="${BASE_URL}/detallescurso/${hashSafe}" class="btn btn-sm btn-light-primary px-3 py-1 fw-bold">
                             <i class="bi bi-eye"></i> Ver
                         </a>
-                        <button type="button" class="btn btn-sm btn-light-danger px-3 py-1 fw-bold btn-eliminar" data-id="${r.id}">
+                        <button type="button" class="btn btn-sm btn-light-danger px-3 py-1 fw-bold btn-eliminar" data-id="${idSafe}">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>
@@ -201,7 +218,7 @@ function eliminarCurso(id) {
                 error: function (xhr) {
                     Swal.fire({
                         title: "Error",
-                        text: "No se pudo eliminar el curso.",
+                        text: (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : "No se pudo eliminar el curso.",
                         icon: "error",
                         confirmButtonColor: "#2563eb",
                     });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cursoreg;
 use App\Models\Tarjetas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CursoregController extends Controller
 {
@@ -15,7 +16,7 @@ class CursoregController extends Controller
                 'id_curso' => 'required|exists:cursos,id',
             ]);
 
-            $cursoId = $request->input('id_curso');
+            $cursoId = (int) $request->input('id_curso');
             $userId = auth()->id();
             $tarjetaId = $request->input('id_tarjeta');
 
@@ -34,7 +35,7 @@ class CursoregController extends Controller
                 if (!$tarjeta) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Debes seleccionar una tarjeta registrada para suscribirte.'
+                        'message' => 'Debes seleccionar una tarjeta registrada válida para suscribirte.'
                     ], 422);
                 }
             }
@@ -60,9 +61,14 @@ class CursoregController extends Controller
                 'message' => 'Registro exitoso en el curso'
             ]);
         } catch (\Throwable $e) {
+            Log::error('Error al inscribir curso: ' . $e->getMessage(), [
+                'user_id' => auth()->id(),
+                'curso_id' => $request->input('id_curso'),
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => 'No se pudo completar la inscripción. Detalle: ' . $e->getMessage()
+                'message' => 'No se pudo completar la inscripción en este momento. Inténtalo más tarde.'
             ], 500);
         }
     }
@@ -74,7 +80,7 @@ class CursoregController extends Controller
                 'id_curso' => 'required|exists:cursos,id',
             ]);
 
-            $cursoId = $request->input('id_curso');
+            $cursoId = (int) $request->input('id_curso');
             $userId = auth()->id();
 
             if (!$userId) {
@@ -91,25 +97,30 @@ class CursoregController extends Controller
             if (!$deleted) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No encontré una inscripción activa para este curso.'
+                    'message' => 'No se encontró una inscripción activa para este curso.'
                 ], 404);
             }
 
             return response()->json([
                 'success' => true,
-                'message' => 'Te has desinscrito del curso. No se devolverá el dinero.'
+                'message' => 'Te has desinscrito del curso correctamente.'
             ]);
         } catch (\Throwable $e) {
+            Log::error('Error al desinscribir curso: ' . $e->getMessage(), [
+                'user_id' => auth()->id(),
+                'curso_id' => $request->input('id_curso'),
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => 'No se pudo completar la desinscripción. Detalle: ' . $e->getMessage()
+                'message' => 'No se pudo completar la desinscripción en este momento. Inténtalo más tarde.'
             ], 500);
         }
     }
 
     public function estado(Request $request)
     {
-        $cursoId = $request->query('id_curso');
+        $cursoId = (int) $request->query('id_curso');
         $userId = auth()->id();
 
         $suscrito = Cursoreg::where('id_curso', $cursoId)

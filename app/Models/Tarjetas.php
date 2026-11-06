@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Tarjetas extends Model
 {
     use HasFactory;
+
     protected $table = 'tarjetabb';
 
     protected $fillable = [
-
         'usuario_id',
         'numero_tarjeta',
         'expiracion',
@@ -19,6 +19,13 @@ class Tarjetas extends Model
         'fecha_registro',
         'banco',
     ];
-    
-      public $timestamps = false;
+
+    /**
+     * Ocultar atributos sensibles en serializaciones JSON
+     */
+    protected $hidden = [
+        'cvv',
+    ];
+
+    public $timestamps = false;
 }
