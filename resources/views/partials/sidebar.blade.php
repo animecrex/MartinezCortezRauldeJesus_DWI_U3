@@ -62,6 +62,12 @@
                     <span>Servidor de Aplicaciones</span>
                 </a>
             </li>
+            <li class="sidebar-nav-item">
+                <a href="{{ route('servidor.bd') }}" class="sidebar-nav-link {{ request()->routeIs('servidor.bd') ? 'active' : '' }}">
+                    <i class="bi bi-database-fill-gear"></i>
+                    <span>Servidor de Base de Datos</span>
+                </a>
+            </li>
         </ul>
     </div>
 

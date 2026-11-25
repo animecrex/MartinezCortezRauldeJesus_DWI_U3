@@ -10,6 +10,7 @@ use App\Http\Controllers\MaestrosController;
 use App\Http\Controllers\CursoregController;
 use App\Http\Controllers\SuscripcionController;
 use App\Http\Controllers\ServidorAplicacionesController;
+use App\Http\Controllers\ServidorBaseDatosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/servidor-aplicaciones', [ServidorAplicacionesController::class, 'index'])->name('servidor.aplicaciones');
     Route::get('/servidor-aplicaciones/estado', [ServidorAplicacionesController::class, 'estadoJson'])->name('servidor.estado');
     Route::post('/servidor-aplicaciones/limpiar-cache', [ServidorAplicacionesController::class, 'limpiarCache'])->name('servidor.limpiar-cache');
+
+    Route::get('/servidor-base-datos', [ServidorBaseDatosController::class, 'index'])->name('servidor.bd');
+    Route::get('/servidor-base-datos/estado', [ServidorBaseDatosController::class, 'estadoJson'])->name('servidor.bd.estado');
+    Route::post('/servidor-base-datos/probar-conexion', [ServidorBaseDatosController::class, 'probarConexion'])->name('servidor.bd.probar');
 });
 
 // Rutas de perfil y gestión de tarjetas (autenticados)
