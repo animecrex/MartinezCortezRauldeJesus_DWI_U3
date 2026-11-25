@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación Técnica - Curso+ (DWI U3)</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #eff6ff;
+            --accent: #2563eb;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #cbd5e1;
+            --bg: #f8fafc;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text);
+            background-color: var(--bg);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #0f172a;
+            color: #fff;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .toolbar-info {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+        .btn-print {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+        .btn-print:hover {
+            background: #1d4ed8;
+        }
+        .container {
+            max-width: 960px;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 48px 56px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        header.doc-header {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 35px;
+        }
+        header.doc-header h1 {
+            margin: 0 0 12px 0;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 24px;
+            background: var(--primary-light);
+            padding: 16px 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            font-size: 0.95rem;
+        }
+        h2.section-title {
+            color: #fff;
+            background: var(--primary);
+            padding: 12px 18px;
+            border-radius: 6px;
+            margin-top: 45px;
+            margin-bottom: 20px;
+            font-size: 1.35rem;
+        }
+        h3 {
+            color: var(--primary);
+            margin-top: 28px;
+            margin-bottom: 8px;
+            font-size: 1.15rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+        }
+        p, li {
+            font-size: 0.98rem;
+            color: #334155;
+        }
+        code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 0.9em;
+            color: #0f172a;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0 28px 0;
+            font-size: 0.92rem;
+        }
+        table th, table td {
+            border: 1px solid #cbd5e1;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        table th {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 700;
+        }
+        /* Apartado interactivo para colocar las capturas de pantalla */
+        .screenshot-box {
+            border: 2px dashed #64748b;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0 30px 0;
+            text-align: center;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        .screenshot-box:hover {
+            border-color: var(--accent);
+            background: #f0f7ff;
+        }
+        .screenshot-box.has-image {
+            border-style: solid;
+            border-color: #cbd5e1;
+            background: #fff;
+            padding: 12px;
+        }
+        .screenshot-label {
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+        }
+        .screenshot-hint {
+            color: var(--muted);
+            font-size: 0.88rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .screenshot-input {
+            display: none;
+        }
+        .btn-upload {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #1e293b;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-upload:hover {
+            background: #cbd5e1;
+        }
+        .preview-container {
+            margin-top: 10px;
+            display: none;
+        }
+        .preview-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 10px;
+        }
+        .btn-remove {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+        .caption-text {
+            font-size: 0.88rem;
+            color: #475569;
+            font-style: italic;
+            margin-top: 6px;
+        }
+        @media print {
+            body {
+                background: #fff;
+            }
+            .toolbar, .btn-upload, .btn-remove, .screenshot-hint {
+                display: none !important;
+            }
+            .container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                max-width: 100%;
+            }
+            .screenshot-box {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                border: 1px solid #cbd5e1;
+                background: #fff;
+            }
+            h2.section-title, h3 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <div>
+            <strong>Documentación DWI Unidad 3 — Curso+</strong>
+            <span class="toolbar-info"> | Haz clic en cualquier recuadro para cargar o pegar (Ctrl+V) tus capturas de pantalla</span>
+        </div>
+        <button class="btn-print" onclick="window.print()">Imprimir / Guardar como PDF</button>
+    </div>
+
+    <div class="container">
+        <header class="doc-header">
+            <h1>Documentación Técnica del Proyecto: Plataforma Web Curso+</h1>
+            <div class="meta-grid">
+                <div><strong>Alumno:</strong> Raúl de Jesús Martínez Cortez</div>
+                <div><strong>Materia:</strong> Desarrollo Web Integral (DWI) - Unidad 3</div>
+                <div><strong>Proyecto:</strong> Sistema de Cursos y Suscripciones (Curso+)</div>
+                <div><strong>Tecnologías:</strong> Laravel 9, PHP 8.2, MariaDB/MySQL, REST API</div>
+                <div><strong>Servidor de Aplicaciones:</strong> XAMPP (Apache 2.4.58, PHP 8.2.12, MariaDB 10.4.32)</div>
+            </div>
+        </header>
+
+        <!-- ================================================================= -->
+        <!-- APARTADO 1: FUNCIONAMIENTO DEL SITIO WEB                          -->
+        <!-- ================================================================= -->
+        <h2 class="section-title">1. Capturas de Pantalla con el Funcionamiento del Sitio Web</h2>
+        <p>
+            El sistema <strong>Curso+</strong> es una plataforma web desarrollada en Laravel que permite gestionar el ciclo completo de oferta académica en línea: autenticación de usuarios, consulta del catálogo de cursos, visualización de costos en moneda nacional (MXN) y divisas extranjeras en tiempo real, administración de tarjetas bancarias, inscripción a cursos con control de cupos, creación de cursos y administración de profesores.
+        </p>
+
+        <h3>1.1 Inicio de Sesión y Registro de Usuarios (<code>/login</code> y <code>/registro</code>)</h3>
+        <p>Pantalla de control de acceso para usuarios registrados y formulario de alta de nuevas cuentas con validación de correo y contraseña.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 1.1 — Pantalla de Login y/o Registro de Usuarios</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 1.1: Autenticación e inscripción de usuarios en la plataforma Curso+.</div>
+        </div>
+
+        <h3>1.2 Catálogo Principal de Cursos (<code>/curso</code>)</h3>
+        <p>Vista principal para usuarios autenticados donde se despliegan las tarjetas de los cursos disponibles con imagen, nombre, instructor, duración en horas y costo.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 1.2 — Catálogo General de Cursos</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 1.2: Visualización del catálogo general de cursos disponibles.</div>
+        </div>
+
+        <h3>1.3 Detalles del Curso e Inscripción (<code>/detallescurso/{hash}</code>)</h3>
+        <p>Muestra la información detallada del curso seleccionado (objetivos, requisitos, fechas, cupo e instructor) y permite al estudiante suscribirse eligiendo una tarjeta bancaria registrada o darse de baja del curso.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 1.3 — Vista de Detalles del Curso y Suscripción</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 1.3: Consulta de detalles del curso y proceso de suscripción.</div>
+        </div>
+
+        <h3>1.4 Creación y Administración de Cursos (<code>/crearcurso</code>)</h3>
+        <p>Formulario para publicar nuevos cursos en la plataforma (nombre, descripción, cupo máximo, profesor asignado, horas, costo, fechas, objetivos, requisitos y portada) y listado de cursos creados con opción de eliminación.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 1.4 — Módulo de Creación y Gestión de Cursos</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 1.4: Registro y administración de cursos por parte del usuario.</div>
+        </div>
+
+        <h3>1.5 Mis Suscripciones (<code>/mis-suscripciones</code>)</h3>
+        <p>Panel donde el estudiante consulta todos los cursos en los que se encuentra inscrito activamente.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 1.5 — Módulo Mis Suscripciones</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 1.5: Listado de cursos a los que el usuario está suscrito.</div>
+        </div>
+
+        <h3>1.6 Gestión de Maestros (<code>/maestros</code>)</h3>
+        <p>Módulo para dar de alta profesores (nombre completo, correo único, materia principal y turno Matutino/Vespertino) y consultar el directorio docente.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 1.6 — Registro y Directorio de Maestros</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 1.6: Administración de maestros e instructores de la plataforma.</div>
+        </div>
+
+        <h3>1.7 Perfil de Usuario y Gestión de Tarjetas Bancarias (<code>/vistaperfil</code>)</h3>
+        <p>Permite al usuario registrar y actualizar tarjetas bancarias (BBVA, Banco Azteca, Banamex, Banorte) para emplearlas al suscribirse a los cursos.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 1.7 — Perfil del Usuario y Billetera de Tarjetas</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 1.7: Gestión del perfil del usuario y tarjetas bancarias asociadas.</div>
+        </div>
+
+        <h3>1.8 Servidor de Aplicaciones (<code>/servidor-aplicaciones</code>)</h3>
+        <p>Módulo interactivo integrado en el menú lateral (<strong>Infraestructura → Servidor de Aplicaciones</strong>) que muestra en tiempo real el estado del servidor HTTP (Apache/PHP), versión de Laravel, latencia y conteo en vivo de MariaDB/MySQL, estado del Web Service externo, verificación de middlewares de seguridad, bitácoras del servidor, limpieza de caché y consola rápida para probar los endpoints <code>/api/v1</code>.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 1.8 — Panel de Servidor de Aplicaciones (/servidor-aplicaciones)</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 1.8: Módulo Servidor de Aplicaciones dentro del sitio web Curso+ (/servidor-aplicaciones).</div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- APARTADO 2: MECANISMOS DE SEGURIDAD EMPLEADOS                     -->
+        <!-- ================================================================= -->
+        <h2 class="section-title">2. Descripción de los Mecanismos de Seguridad Empleados</h2>
+        <p>
+            A continuación se describen los mecanismos de seguridad implementados en el proyecto para resguardar la confidencialidad, integridad y disponibilidad de los datos:
+        </p>
+
+        <h3>2.1 Autenticación por Middlewares y Hashing de Contraseñas con Bcrypt</h3>
+        <ul>
+            <li><strong>Funcionamiento:</strong> Todas las rutas privadas están resguardadas mediante los middlewares <code>auth</code> y <code>verified</code> en <code>routes/web.php</code>. Si un visitante no autenticado intenta acceder directamente por URL a <code>/curso</code>, <code>/crearcurso</code> o <code>/vistaperfil</code>, el sistema bloquea el acceso y lo redirige a <code>/login</code>.</li>
+            <li><strong>Resguardo de credenciales:</strong> Las contraseñas jamás se guardan en texto plano; se procesan con el algoritmo criptográfico <strong>Bcrypt</strong> (<code>Hash::make()</code>) y el campo <code>password</code> se declara dentro de la propiedad <code>$hidden</code> del modelo <code>User</code> para evitar su exposición en respuestas JSON.</li>
+        </ul>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 2.1 — Demostración de Autenticación y Hashing Bcrypt</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 2.1: Protección de rutas mediante middleware auth y contraseñas cifradas con Bcrypt.</div>
+        </div>
+
+        <h3>2.2 Cifrado Simétrico de Identificadores en URLs (Prevención de IDOR con <code>Crypt</code> AES-256-CBC)</h3>
+        <ul>
+            <li><strong>Funcionamiento:</strong> En <code>CrearcursoController</code>, los identificadores de los cursos se cifran antes de enviarse al cliente mediante <code>Crypt::encryptString($curso->id)</code> utilizando cifrado simétrico <strong>AES-256-CBC</strong> autenticado con firma HMAC.</li>
+            <li><strong>Protección:</strong> Cuando el usuario accede a <code>/detallescurso/{id}</code> o solicita eliminar un curso en <code>/crearcurso/eliminarcurso/{id}</code>, el servidor desencripta la cadena con <code>Crypt::decryptString($id)</code>. Si un atacante modifica un solo carácter del hash en la URL, la firma falla y el sistema rechaza la petición con código <code>404 Not Found</code> o <code>400 Bad Request</code>.</li>
+        </ul>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 2.2 — Demostración de URLs Cifradas con Laravel Crypt (AES-256)</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 2.2: Identificador de curso encriptado en la URL y bloqueo ante manipulación del parámetro.</div>
+        </div>
+
+        <h3>2.3 Protección contra Falsificación de Peticiones en Sitios Cruzados (CSRF Token)</h3>
+        <ul>
+            <li><strong>Funcionamiento:</strong> Todos los formularios y peticiones <code>POST</code>, <code>PUT</code>, <code>PATCH</code> y <code>DELETE</code> integran el token de seguridad <code>@csrf</code> (validado por el middleware <code>VerifyCsrfToken</code>) o la cabecera HTTP <code>X-CSRF-TOKEN</code> en peticiones AJAX. Si se envía una petición sin un token válido de la sesión activa, Laravel rechaza la solicitud con estado <code>419 Page Expired</code>.</li>
+        </ul>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 2.3 — Demostración del Token CSRF en Formularios / Peticiones HTTP</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 2.3: Verificación del token CSRF en peticiones de modificación de datos.</div>
+        </div>
+
+        <h3>2.4 Enmascaramiento de Datos Financieros (Tarjetas y CVV) y Control de Propiedad (<code>403 Forbidden</code>)</h3>
+        <ul>
+            <li><strong>Enmascaramiento de Tarjetas:</strong> En <code>ProfileController@vistaperfil</code> solo se envían a la vista los últimos 4 dígitos de la tarjeta (<code>substr($card->numero_tarjeta, -4)</code>). Además, en el modelo <code>Tarjetas</code> el atributo <code>cvv</code> está oculto en <code>$hidden = ['cvv']</code> y al editar una tarjeta se devuelve enmascarado como <code>"***"</code>.</li>
+            <li><strong>Control de Acceso por Propietario:</strong> Tanto al editar/actualizar una tarjeta (<code>if ($tarjeta->usuario_id !== Auth::id()) abort(403);</code>) como al eliminar un curso (<code>Curso::where('id', $id)->where('user_id', Auth::id())</code>), el sistema verifica que el registro pertenezca estrictamente al usuario en sesión.</li>
+        </ul>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 2.4 — Demostración de Enmascaramiento de Tarjetas/CVV y Control de Acceso</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 2.4: Ocultamiento de dígitos sensibles de tarjetas bancarias y validación de pertenencia.</div>
+        </div>
+
+        <h3>2.5 Sanitización contra XSS (<code>strip_tags</code>), Prevención de SQL Injection y Subida Segura de Imágenes</h3>
+        <ul>
+            <li><strong>Prevención de XSS y SQLi:</strong> Todas las entradas de texto en la creación de cursos se limpian con <code>strip_tags()</code> antes de almacenarse, las vistas Blade escapan automáticamente la salida con <code>{{ }}</code> y todas las consultas a MySQL se realizan con sentencias preparadas a través de <strong>Eloquent ORM</strong>.</li>
+            <li><strong>Subida Segura de Archivos y Validación Backend:</strong> En <code>CrearcursoController@registrar</code> se valida que el archivo subido sea estrictamente una imagen válida (<code>mimes:jpeg,png,jpg,webp|max:2048</code>), se renombra con una cadena aleatoria de 32 caracteres (<code>Str::random(32)</code>) y se reprocesa con <code>Intervention Image</code> a 300x300 px para neutralizar cualquier carga útil maliciosa.</li>
+        </ul>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 2.5 — Demostración de Validación de Formularios y Sanitización</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 2.5: Validación de reglas de negocio, expresiones regulares y sanitización de entradas.</div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- APARTADO 3: WEB SERVICES DE TERCEROS EMPLEADOS                    -->
+        <!-- ================================================================= -->
+        <h2 class="section-title">3. WEB Services de Terceros Empleados</h2>
+        <p>
+            El sistema integra el servicio web externo <strong>Open Exchange Rates API (ExchangeRate-API)</strong> a través de la clase de servicio <code>App\Services\ExchangeRateService</code> (<code>app/Services/ExchangeRateService.php</code>) para obtener tasas de cambio internacionales en tiempo real y ofrecer la conversión automática de los costos de los cursos desde Pesos Mexicanos (<strong>MXN</strong>) hacia <strong>USD, EUR, GBP, CAD y JPY</strong>.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Propiedad</th>
+                    <th>Detalle Técnico</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Proveedor Externo</strong></td>
+                    <td>Open Exchange Rates API (ExchangeRate-API)</td>
+                </tr>
+                <tr>
+                    <td><strong>Endpoint Consumido</strong></td>
+                    <td><code>https://open.er-api.com/v6/latest/MXN</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Método y Formato</strong></td>
+                    <td>Petición HTTP <code>GET</code> sobre SSL/TLS (HTTPS) con respuesta en formato <code>JSON</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Mecanismo de Caché y Resiliencia</strong></td>
+                    <td>Caché automática de 3600 segundos (1 hora) mediante <code>Cache::remember()</code> y sistema de <em>Fallback</em> automático con tasas de respaldo en caso de desconexión de red.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>3.1 Consulta de Tasas de Cambio en Tiempo Real (<code>GET /api/v1/tipo-cambio</code>)</h3>
+        <p>Demostración del consumo del servicio web externo que recupera las tasas vigentes para MXN y reporta el estado en línea y la fecha de actualización del proveedor.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 3.1 — Funcionamiento del Web Service de Terceros (Tasas de Cambio en Tiempo Real)</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 3.1: Respuesta del Web Service de terceros Open Exchange Rates con tasas de cambio actuales.</div>
+        </div>
+
+        <h3>3.2 Conversión Automática de Divisas (<code>GET /api/v1/tipo-cambio/convertir</code> e Integración en Cursos)</h3>
+        <p>Demostración de la conversión monetaria de un monto en Pesos Mexicanos a moneda extranjera (por ejemplo <code>?monto=1500&amp;moneda=USD</code>) y su aplicación directa en el cálculo de precios internacionales de los cursos.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 3.2 — Funcionamiento de la Conversión de Divisas con el Web Service de Terceros</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 3.2: Conversión monetaria en tiempo real de MXN a USD/EUR empleando el Web Service externo.</div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- APARTADO 4: WEB SERVICES PROPIOS EMPLEADOS                        -->
+        <!-- ================================================================= -->
+        <h2 class="section-title">4. WEB Services Propios Empleados</h2>
+        <p>
+            Se desarrolló una <strong>API RESTful propia</strong> bajo el prefijo <code>/api/v1</code> (definida en <code>routes/api.php</code>), la cual expone los recursos de la plataforma mediante respuestas JSON estandarizadas (estructura <code>exito</code>, <code>mensaje</code>, <code>datos</code>, <code>meta</code> y <code>timestamp</code> en formato ISO-8601).
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Método</th>
+                    <th>Endpoint Propio</th>
+                    <th>Controlador</th>
+                    <th>Funcionalidad Principal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>GET</code></td>
+                    <td><code>/api/v1</code></td>
+                    <td><code>ApiDocsController@info</code></td>
+                    <td>Documentación interactiva y catálogo de todos los endpoints disponibles.</td>
+                </tr>
+                <tr>
+                    <td><code>GET</code></td>
+                    <td><code>/api/v1/health</code></td>
+                    <td><code>ApiDocsController@health</code></td>
+                    <td>Diagnóstico del estado del servidor, base de datos MySQL y servicio externo.</td>
+                </tr>
+                <tr>
+                    <td><code>GET</code></td>
+                    <td><code>/api/v1/cursos</code></td>
+                    <td><code>CursoApiController@index</code></td>
+                    <td>Catálogo de cursos con filtros (<code>buscar</code>, <code>precio_max</code>, <code>orden_por</code>, <code>limite</code>), precios en MXN/USD y cupo.</td>
+                </tr>
+                <tr>
+                    <td><code>GET</code></td>
+                    <td><code>/api/v1/cursos/{id}</code></td>
+                    <td><code>CursoApiController@show</code></td>
+                    <td>Detalle completo de un curso, objetivos, requisitos y tarifas en MXN, USD y EUR.</td>
+                </tr>
+                <tr>
+                    <td><code>GET</code></td>
+                    <td><code>/api/v1/cursos/{id}/disponibilidad</code></td>
+                    <td><code>CursoApiController@disponibilidad</code></td>
+                    <td>Verificación en tiempo real de lugares disponibles, inscritos actuales y porcentaje de ocupación.</td>
+                </tr>
+                <tr>
+                    <td><code>GET</code></td>
+                    <td><code>/api/v1/maestros</code></td>
+                    <td><code>MaestroApiController@index</code></td>
+                    <td>Listado de profesores registrados y cálculo del total de cursos asignados.</td>
+                </tr>
+                <tr>
+                    <td><code>GET</code></td>
+                    <td><code>/api/v1/maestros/{id}</code></td>
+                    <td><code>MaestroApiController@show</code></td>
+                    <td>Perfil individual del maestro y relación detallada de los cursos que imparte.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>4.1 Especificación de la API y Health-Check (<code>GET /api/v1</code> y <code>GET /api/v1/health</code>)</h3>
+        <p>Demostración del catálogo autodescriptivo de la API y del chequeo de salud del sistema y sus dependencias.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 4.1 — Web Service Propio: Catálogo de la API (/api/v1) y Health Check (/api/v1/health)</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 4.1: Respuesta JSON de los endpoints de especificación y estado operativo de la API.</div>
+        </div>
+
+        <h3>4.2 Web Service Propio de Consulta y Filtrado de Cursos (<code>GET /api/v1/cursos</code>)</h3>
+        <p>Demostración del endpoint RESTful que entrega la lista de cursos enriquecida con el cálculo de lugares disponibles y precios convertidos a dólares estadounidenses.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 4.2 — Web Service Propio: Listado y Filtrado de Cursos (/api/v1/cursos)</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 4.2: Consulta del catálogo de cursos mediante el Web Service propio.</div>
+        </div>
+
+        <h3>4.3 Web Service Propio de Detalle y Disponibilidad de Cupo (<code>GET /api/v1/cursos/{id}</code> y <code>/disponibilidad</code>)</h3>
+        <p>Demostración de la consulta individual de un curso y la verificación en tiempo real de su capacidad máxima, alumnos inscritos y porcentaje de ocupación.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 4.3 — Web Service Propio: Detalle de Curso y Disponibilidad (/api/v1/cursos/{id}/disponibilidad)</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 4.3: Respuesta JSON de detalle y disponibilidad en tiempo real de un curso.</div>
+        </div>
+
+        <h3>4.4 Web Service Propio de Maestros y Carga Académica (<code>GET /api/v1/maestros</code> y <code>/api/v1/maestros/{id}</code>)</h3>
+        <p>Demostración del servicio web que consulta la plantilla de profesores y los cursos asociados a cada instructor.</p>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 4.4 — Web Service Propio: Directorio y Detalle de Maestros (/api/v1/maestros)</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 4.4: Consulta de profesores e historial de cursos impartidos vía API RESTful propia.</div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- APARTADO 5: SERVIDOR DE APLICACIONES                              -->
+        <!-- ================================================================= -->
+        <h2 class="section-title">5. Servidor de Aplicaciones</h2>
+        <p>
+            La plataforma <strong>Curso+</strong> se despliega sobre una arquitectura de servidor de aplicaciones integrada por el stack <strong>XAMPP</strong> en Windows: <strong>Apache HTTP Server 2.4.58</strong> como servidor web y puerta de enlace HTTP, el motor de ejecución <strong>PHP 8.2.12 (Zend Engine v4.2.12)</strong>, el núcleo de aplicación <strong>Laravel 9.x</strong> mediante su <em>Front Controller</em> (<code>public/index.php</code>) y el motor de base de datos relacional <strong>MariaDB 10.4.32</strong> (compatible con MySQL). Asimismo, soporta ejecución en modo de desarrollo local mediante <code>php artisan serve</code>.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Componente del Servidor</th>
+                    <th>Especificación y Configuración</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Stack / Entorno de Despliegue</strong></td>
+                    <td>XAMPP sobre Windows (<code>C:\xampp\htdocs\MartinezCortezRauldeJesus_DWI_U3</code>)</td>
+                </tr>
+                <tr>
+                    <td><strong>Servidor Web / HTTP</strong></td>
+                    <td>Apache HTTP Server <code>2.4.58 (Win64)</code> con módulos <code>mod_rewrite</code>, <code>mod_headers</code> y <code>mod_expires</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Motor de Ejecución (Runtime)</strong></td>
+                    <td>PHP <code>8.2.12</code> (Zend Engine <code>v4.2.12</code>, ZTS x64) + Composer PSR-4 Autoloader</td>
+                </tr>
+                <tr>
+                    <td><strong>Framework / Núcleo HTTP</strong></td>
+                    <td>Laravel <code>9.x</code> (<code>laravel/framework ^9.19</code>), Front Controller <code>public/index.php</code> y <code>App\Http\Kernel</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Servidor de Base de Datos</strong></td>
+                    <td>MariaDB <code>10.4.32</code> (compatible con MySQL), host <code>127.0.0.1</code>, puerto <code>3306</code>, BD <code>proyectoalan</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Sesiones, Caché y Bitácoras</strong></td>
+                    <td>Driver <code>file</code> (<code>SESSION_LIFETIME=120</code>, <code>http_only=true</code>, <code>same_site=lax</code>), caché <code>file</code> y logs rotativos en <code>storage/logs/</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Servidor Embebido de Pruebas</strong></td>
+                    <td><code>php artisan serve</code> (<code>http://127.0.0.1:8000</code>)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>5.1 Arquitectura del Servidor de Aplicaciones y Ciclo de Vida de la Petición</h3>
+        <ul>
+            <li><strong>Recepción y Enrutamiento en Apache (<code>.htaccess</code> y <code>public/.htaccess</code>):</strong> El archivo <code>.htaccess</code> raíz redirige limpiamente las peticiones hacia <code>/public/</code> sin exponer el código interno del framework, mientras que <code>public/.htaccess</code> enruta las solicitudes dinámicas hacia el <em>Front Controller</em> <code>public/index.php</code> mediante <code>mod_rewrite</code>.</li>
+            <li><strong>Núcleo HTTP de Laravel (<code>bootstrap/app.php</code> y <code>app/Http/Kernel.php</code>):</strong> Inicializa el contenedor de dependencias y procesa cada solicitud mediante los middlewares globales (<code>TrustProxies</code>, <code>HandleCors</code>, <code>ValidatePostSize</code>, <code>TrimStrings</code>, <code>SecurityHeaders</code>, <code>RequestSecurityLogger</code>) y los grupos <code>web</code> (sesiones, cookies cifradas, CSRF) o <code>api</code> (<code>throttle:api</code>).</li>
+            <li><strong>Procesamiento y Persistencia:</strong> Los controladores ejecutan la lógica de negocio, consultan la base de datos <code>proyectoalan</code> vía Eloquent ORM/PDO en MariaDB (<code>127.0.0.1:3306</code>) o consumen servicios externos vía HTTP Client, devolviendo vistas Blade o respuestas JSON estandarizadas.</li>
+        </ul>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 5.1 — Panel de Control del Servidor de Aplicaciones (XAMPP: Apache y MySQL/MariaDB)</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 5.1: Panel de control de XAMPP mostrando los servicios activos de Apache y MySQL/MariaDB ejecutando Curso+.</div>
+        </div>
+
+        <h3>5.2 Configuración, Endurecimiento y Optimización en Apache (<code>.htaccess</code>)</h3>
+        <ul>
+            <li><strong>Bloqueo de archivos sensibles (<code>FilesMatch</code> y <code>RedirectMatch</code>):</strong> Deniega el acceso directo (<code>403 Forbidden</code>) a <code>.env</code>, <code>composer.json</code>, <code>composer.lock</code>, <code>package.json</code>, <code>artisan</code>, <code>.editorconfig</code> y repositorios <code>.git</code>.</li>
+            <li><strong>Ocultamiento de información y navegación:</strong> Desactiva el listado de directorios (<code>Options -MultiViews -Indexes</code>), oculta la firma del servidor (<code>ServerSignature Off</code>) y remueve la cabecera <code>X-Powered-By</code>.</li>
+            <li><strong>Cabeceras de seguridad a nivel servidor (<code>mod_headers</code>):</strong> Aplica <code>X-Frame-Options: SAMEORIGIN</code>, <code>X-Content-Type-Options: nosniff</code>, <code>Referrer-Policy</code>, <code>X-XSS-Protection</code>, <code>Permissions-Policy</code> y <code>X-Permitted-Cross-Domain-Policies</code>.</li>
+            <li><strong>Caché de recursos estáticos (<code>mod_expires</code>):</strong> Establece expiración de 1 mes para archivos CSS, JavaScript e imágenes para optimizar el tiempo de carga.</li>
+        </ul>
+        <div class="screenshot-box" tabindex="0">
+            <span class="screenshot-label">CAPTURA 5.2 — Verificación del Servidor de Aplicaciones en Operación</span>
+            <span class="screenshot-hint">Haz clic en el botón, arrastra tu imagen aquí o selecciona el recuadro y presiona Ctrl+V</span>
+            <label class="btn-upload">Seleccionar captura(s)<input type="file" class="screenshot-input" accept="image/*" multiple></label>
+            <div class="preview-container"></div>
+            <div class="caption-text">Figura 5.2: Verificación de operación del servidor de aplicaciones (ejecución en Apache/XAMPP o php artisan serve y respuesta HTTP).</div>
+        </div>
+
+        <h3>5.3 Gestión de Entorno, Almacenamiento y Bitácoras del Servidor (<code>.env</code>, <code>storage/</code> y <code>config/logging.php</code>)</h3>
+        <ul>
+            <li><strong>Variables de entorno (<code>.env</code>):</strong> Centraliza la clave de cifrado <code>APP_KEY</code>, parámetros de conexión a MariaDB (<code>127.0.0.1:3306</code>, base de datos <code>proyectoalan</code>) y drivers de sesión y caché (<code>file</code>).</li>
+            <li><strong>Enlace simbólico de almacenamiento (<code>public/storage</code>):</strong> Conecta <code>storage/app/public</code> mediante <code>php artisan storage:link</code> para servir las imágenes de portada de cursos (<code>storage/images/</code>).</li>
+            <li><strong>Bitácoras rotativas (<code>config/logging.php</code>):</strong> Divide los registros del servidor en canales dedicados con retención diaria de 30 días: <code>laravel.log</code> (errores generales), <code>auth.log</code> (autenticación) y <code>security.log</code> (alertas de seguridad).</li>
+        </ul>
+    </div>
+
+    <script>
+        document.querySelectorAll('.screenshot-box').forEach(box => {
+            const input = box.querySelector('.screenshot-input');
+            const previewContainer = box.querySelector('.preview-container');
+
+            function handleFiles(files) {
+                if (!files || !files.length) return;
+                Array.from(files).forEach(file => {
+                    if (!file.type.startsWith('image/')) return;
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        const wrapper = document.createElement('div');
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+
+                        const removeBtn = document.createElement('button');
+                        removeBtn.type = 'button';
+                        removeBtn.className = 'btn-remove';
+                        removeBtn.textContent = 'Quitar imagen';
+                        removeBtn.onclick = () => {
+                            wrapper.remove();
+                            if (previewContainer.children.length === 0) {
+                                previewContainer.style.display = 'none';
+                                box.classList.remove('has-image');
+                            }
+                        };
+
+                        wrapper.appendChild(img);
+                        wrapper.appendChild(document.createElement('br'));
+                        wrapper.appendChild(removeBtn);
+                        previewContainer.appendChild(wrapper);
+                        previewContainer.style.display = 'block';
+                        box.classList.add('has-image');
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            input.addEventListener('change', e => handleFiles(e.target.files));
+
+            box.addEventListener('dragover', e => {
+                e.preventDefault();
+                box.style.borderColor = '#2563eb';
+            });
+            box.addEventListener('dragleave', () => {
+                box.style.borderColor = '';
+            });
+            box.addEventListener('drop', e => {
+                e.preventDefault();
+                box.style.borderColor = '';
+                handleFiles(e.dataTransfer.files);
+            });
+            box.addEventListener('paste', e => {
+                const items = e.clipboardData?.items;
+                if (!items) return;
+                const files = [];
+                for (const item of items) {
+                    if (item.type.startsWith('image/')) {
+                        files.push(item.getAsFile());
+                    }
+                }
+                handleFiles(files);
+            });
+        });
+    </script>
+</body>
+</html>

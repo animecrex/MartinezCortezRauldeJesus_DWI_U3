@@ -9,6 +9,7 @@ use App\Http\Controllers\CursoController;
 use App\Http\Controllers\MaestrosController;
 use App\Http\Controllers\CursoregController;
 use App\Http\Controllers\SuscripcionController;
+use App\Http\Controllers\ServidorAplicacionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/maestros', [MaestrosController::class, 'indexmaestros'])->name('maestros');
     Route::post('/maestros', [MaestrosController::class, 'guardar'])->name('maestros.guardar');
+
+    Route::get('/servidor-aplicaciones', [ServidorAplicacionesController::class, 'index'])->name('servidor.aplicaciones');
+    Route::get('/servidor-aplicaciones/estado', [ServidorAplicacionesController::class, 'estadoJson'])->name('servidor.estado');
+    Route::post('/servidor-aplicaciones/limpiar-cache', [ServidorAplicacionesController::class, 'limpiarCache'])->name('servidor.limpiar-cache');
 });
 
 // Rutas de perfil y gestión de tarjetas (autenticados)

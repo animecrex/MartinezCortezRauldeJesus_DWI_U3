@@ -8,7 +8,6 @@ use App\Models\Tarjetas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -54,7 +53,6 @@ class CrearcursoController extends Controller
         if ($request->hasFile('imagen')) {
             $imagen = $request->file('imagen');
 
-            // Nombre aleatorio seguro y extensión deducida del contenido MIME
             $extension = $imagen->guessExtension() ?: 'jpg';
             $nombreimagen = Str::random(32) . '.' . $extension;
 
@@ -97,7 +95,6 @@ class CrearcursoController extends Controller
 
     public function eliminar($id)
     {
-        // Soporta ID numérico o identificador encriptado
         if (!is_numeric($id)) {
             try {
                 $id = Crypt::decryptString($id);
@@ -154,7 +151,6 @@ class CrearcursoController extends Controller
         }
 
         $curso = Curso::findOrFail($id);
-
         $tarjetas = Tarjetas::where('usuario_id', Auth::id())->get();
 
         return view('cursos.detalles', compact('curso', 'tarjetas'));

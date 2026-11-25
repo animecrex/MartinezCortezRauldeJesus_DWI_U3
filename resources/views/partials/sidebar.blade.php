@@ -50,6 +50,19 @@
                 </a>
             </li>
         </ul>
+
+        <!-- Section: Infraestructura -->
+        <div class="sidebar-nav-header">
+            Infraestructura
+        </div>
+        <ul class="sidebar-nav-list">
+            <li class="sidebar-nav-item">
+                <a href="{{ route('servidor.aplicaciones') }}" class="sidebar-nav-link {{ request()->routeIs('servidor.aplicaciones') ? 'active' : '' }}">
+                    <i class="bi bi-hdd-rack-fill"></i>
+                    <span>Servidor de Aplicaciones</span>
+                </a>
+            </li>
+        </ul>
     </div>
 
     <!-- Sidebar Bottom / User Footer -->
