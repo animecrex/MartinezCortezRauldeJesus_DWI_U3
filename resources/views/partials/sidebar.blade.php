@@ -68,6 +68,12 @@
                     <span>Servidor de Base de Datos</span>
                 </a>
             </li>
+            <li class="sidebar-nav-item">
+                <a href="{{ route('balanceo.index') }}" class="sidebar-nav-link {{ request()->routeIs('balanceo.*') ? 'active' : '' }}">
+                    <i class="bi bi-diagram-3-fill"></i>
+                    <span>Balanceo de Cargas</span>
+                </a>
+            </li>
         </ul>
     </div>
 

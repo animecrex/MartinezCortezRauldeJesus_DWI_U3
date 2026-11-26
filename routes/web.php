@@ -11,6 +11,7 @@ use App\Http\Controllers\CursoregController;
 use App\Http\Controllers\SuscripcionController;
 use App\Http\Controllers\ServidorAplicacionesController;
 use App\Http\Controllers\ServidorBaseDatosController;
+use App\Http\Controllers\BalanceoCargasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/servidor-base-datos', [ServidorBaseDatosController::class, 'index'])->name('servidor.bd');
     Route::get('/servidor-base-datos/estado', [ServidorBaseDatosController::class, 'estadoJson'])->name('servidor.bd.estado');
     Route::post('/servidor-base-datos/probar-conexion', [ServidorBaseDatosController::class, 'probarConexion'])->name('servidor.bd.probar');
+
+    Route::get('/balanceo-cargas', [BalanceoCargasController::class, 'index'])->name('balanceo.index');
+    Route::get('/balanceo-cargas/estado', [BalanceoCargasController::class, 'estadoJson'])->name('balanceo.estado');
+    Route::post('/balanceo-cargas/despachar', [BalanceoCargasController::class, 'despachar'])->name('balanceo.despachar');
+    Route::post('/balanceo-cargas/algoritmo', [BalanceoCargasController::class, 'cambiarAlgoritmo'])->name('balanceo.algoritmo');
+    Route::post('/balanceo-cargas/nodo/{id}/toggle', [BalanceoCargasController::class, 'alternarNodo'])->name('balanceo.nodo.toggle');
+    Route::post('/balanceo-cargas/reiniciar', [BalanceoCargasController::class, 'reiniciar'])->name('balanceo.reiniciar');
 });
 
 // Rutas de perfil y gestión de tarjetas (autenticados)
