@@ -80,6 +80,12 @@
                     <span>Configuración de Dominio</span>
                 </a>
             </li>
+            <li class="sidebar-nav-item">
+                <a href="{{ route('certificados.index') }}" class="sidebar-nav-link {{ request()->routeIs('certificados.*') ? 'active' : '' }}">
+                    <i class="bi bi-shield-lock-fill"></i>
+                    <span>Certificados de Seguridad</span>
+                </a>
+            </li>
         </ul>
     </div>
 

@@ -13,6 +13,7 @@ use App\Http\Controllers\ServidorAplicacionesController;
 use App\Http\Controllers\ServidorBaseDatosController;
 use App\Http\Controllers\BalanceoCargasController;
 use App\Http\Controllers\ConfiguracionDominioController;
+use App\Http\Controllers\CertificadosSeguridadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +66,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/configuracion-dominio/actualizar', [ConfiguracionDominioController::class, 'actualizar'])->name('dominio.actualizar');
     Route::post('/configuracion-dominio/verificar-dns', [ConfiguracionDominioController::class, 'verificarDns'])->name('dominio.verificar');
     Route::post('/configuracion-dominio/restablecer', [ConfiguracionDominioController::class, 'restablecer'])->name('dominio.restablecer');
+
+    Route::get('/certificados-seguridad', [CertificadosSeguridadController::class, 'index'])->name('certificados.index');
+    Route::post('/certificados-seguridad/generar', [CertificadosSeguridadController::class, 'generar'])->name('certificados.generar');
+    Route::post('/certificados-seguridad/inspeccionar', [CertificadosSeguridadController::class, 'inspeccionar'])->name('certificados.inspeccionar');
+    Route::get('/certificados-seguridad/descargar-pem', [CertificadosSeguridadController::class, 'descargarPem'])->name('certificados.descargar');
 });
 
 // Rutas de perfil y gestión de tarjetas (autenticados)
