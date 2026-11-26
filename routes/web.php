@@ -12,6 +12,7 @@ use App\Http\Controllers\SuscripcionController;
 use App\Http\Controllers\ServidorAplicacionesController;
 use App\Http\Controllers\ServidorBaseDatosController;
 use App\Http\Controllers\BalanceoCargasController;
+use App\Http\Controllers\ConfiguracionDominioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/balanceo-cargas/algoritmo', [BalanceoCargasController::class, 'cambiarAlgoritmo'])->name('balanceo.algoritmo');
     Route::post('/balanceo-cargas/nodo/{id}/toggle', [BalanceoCargasController::class, 'alternarNodo'])->name('balanceo.nodo.toggle');
     Route::post('/balanceo-cargas/reiniciar', [BalanceoCargasController::class, 'reiniciar'])->name('balanceo.reiniciar');
+
+    Route::get('/configuracion-dominio', [ConfiguracionDominioController::class, 'index'])->name('dominio.index');
+    Route::post('/configuracion-dominio/actualizar', [ConfiguracionDominioController::class, 'actualizar'])->name('dominio.actualizar');
+    Route::post('/configuracion-dominio/verificar-dns', [ConfiguracionDominioController::class, 'verificarDns'])->name('dominio.verificar');
+    Route::post('/configuracion-dominio/restablecer', [ConfiguracionDominioController::class, 'restablecer'])->name('dominio.restablecer');
 });
 
 // Rutas de perfil y gestión de tarjetas (autenticados)

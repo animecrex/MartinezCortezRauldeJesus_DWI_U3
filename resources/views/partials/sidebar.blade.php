@@ -74,6 +74,12 @@
                     <span>Balanceo de Cargas</span>
                 </a>
             </li>
+            <li class="sidebar-nav-item">
+                <a href="{{ route('dominio.index') }}" class="sidebar-nav-link {{ request()->routeIs('dominio.*') ? 'active' : '' }}">
+                    <i class="bi bi-globe2"></i>
+                    <span>Configuración de Dominio</span>
+                </a>
+            </li>
         </ul>
     </div>
 
